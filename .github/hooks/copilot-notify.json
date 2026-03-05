@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "node ./scripts/copilot-notify.mjs",
+        "windows": "node .\\scripts\\copilot-notify.mjs",
+        "timeout": 15
+      }
+    ]
+  }
+}

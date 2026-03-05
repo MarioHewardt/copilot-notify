@@ -1,0 +1,7 @@
+{
+  "name": "copilot-webhook-notify",
+  "description": "VS Code Agent Hook that sends a webhook notification whenever Copilot invokes a tool. Works with Teams, Slack, Discord, or any HTTP endpoint.",
+  "version": "1.0.0",
+  "license": "MIT",
+  "keywords": ["vscode", "copilot", "hooks", "webhook", "notifications"]
+}
