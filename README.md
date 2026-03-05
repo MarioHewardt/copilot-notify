@@ -33,7 +33,21 @@ scripts/copilot-notify.mjs          ← Hook script (Node.js, zero dependencies)
 
 ## Setup
 
-### 1. Copy into your repo
+### Quick install (one-liner)
+
+**Bash / macOS / Linux:**
+```bash
+curl -sL https://raw.githubusercontent.com/MarioHewardt/copilot-notify/main/setup.sh | bash
+```
+
+**PowerShell / Windows:**
+```powershell
+irm https://raw.githubusercontent.com/MarioHewardt/copilot-notify/main/setup.ps1 | iex
+```
+
+Run either command from the **root of your repo**. It downloads the two required files into the right locations.
+
+### Manual install
 
 Copy these two paths into your project:
 
