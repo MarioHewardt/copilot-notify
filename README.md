@@ -120,9 +120,34 @@ Set the `WEBHOOK_HOOK_MODE` environment variable to control behavior:
 
 | Risk | Criteria |
 |------|----------|
-| **High** 🔴 | `rm -rf`, `DROP TABLE`, `git push --force`, `git reset --hard`, etc. |
+| **High** 🔴 | Commands matching deny patterns (see below) |
 | **Medium** 🟡 | Destructive tools: `run_in_terminal`, `replace_string_in_file`, `create_file` |
 | **Low** 🟢 | Read-only tools: searches, file reads, etc. |
+
+### Custom deny patterns
+
+Set `WEBHOOK_DENY_PATTERNS` to a comma-separated list of regexes to define what "high risk" means to you:
+
+```powershell
+# PowerShell
+[Environment]::SetEnvironmentVariable("WEBHOOK_DENY_PATTERNS", "rm\s+-rf,DROP\s+TABLE,kubectl\s+delete,docker\s+rm", "User")
+```
+
+```bash
+# Bash
+export WEBHOOK_DENY_PATTERNS="rm\s+-rf,DROP\s+TABLE,kubectl\s+delete,docker\s+rm"
+```
+
+If not set, the defaults are:
+
+| Pattern | Catches |
+|---------|---------|
+| `rm -rf` | Recursive file deletion |
+| `DROP TABLE` / `DROP DATABASE` | SQL destruction |
+| `git push --force` | Force push |
+| `git reset --hard` | Discarding work |
+| `format ... C:` | Disk formatting |
+| `del /s /f /q` | Windows bulk deletion |
 
 ## Notification Format
 

@@ -10,6 +10,8 @@
 //   WEBHOOK_HOOK_MODE — "notify" (default): send notification, allow tool to proceed
 //                       "ask": send notification and require user confirmation in VS Code
 //                       "deny_destructive": auto-deny destructive tools, notify on others
+//   WEBHOOK_DENY_PATTERNS — comma-separated regexes that define "high risk" commands
+//                           (overrides defaults when set)
 
 import { readFileSync } from "fs";
 import https from "https";
@@ -51,7 +53,7 @@ const DESTRUCTIVE_TOOLS = new Set([
   "create_file",
 ]);
 
-const HIGH_RISK_PATTERNS = [
+const DEFAULT_HIGH_RISK_PATTERNS = [
   /\brm\s+(-rf?|--recursive)/i,
   /\bdrop\s+table/i,
   /\bdrop\s+database/i,
@@ -60,6 +62,12 @@ const HIGH_RISK_PATTERNS = [
   /\bformat\b.*\b[a-z]:/i,
   /\bdel\s+\/[sfq]/i,
 ];
+
+// WEBHOOK_DENY_PATTERNS overrides the defaults (comma-separated regexes)
+const userPatterns = process.env.WEBHOOK_DENY_PATTERNS;
+const HIGH_RISK_PATTERNS = userPatterns
+  ? userPatterns.split(",").map((p) => new RegExp(p.trim(), "i"))
+  : DEFAULT_HIGH_RISK_PATTERNS;
 
 function classifyRisk(name, toolInput) {
   const command = toolInput.command ?? toolInput.details ?? "";
